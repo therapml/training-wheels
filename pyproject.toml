@@ -1,0 +1,39 @@
+[project]
+name = "training-wheels"
+version = "0.1.0"
+description = "Training module for TherapML Team"
+readme = "README.md"
+requires-python = ">=3.11"
+dependencies = [
+    "einsum>=0.3.0",
+    "jaxtyping>=0.3.7",
+    "numpy>=2.4.2",
+    "pytest>=9.0.2",
+    "torch>=2.10.0",
+]
+
+[build-system]
+requires = ["uv_build"]
+build-backend = "uv_build"
+
+[tool.uv.build-backend]
+module-name = "therapml"
+module-root = ""
+
+[tool.python.ini_options]
+log_cli = true
+log_cli_level = "INFO"
+addopts = "-s"
+
+[tool.ruff]
+line-length = 120
+
+[tool.ruff.lint.extend-per-file-ignores]
+# Also ignore `E402` in all `__init__.py` files.
+"__init__.py" = ["E402", "F401", "F403", "E501"]
+
+[tool.ruff.lint]
+extend-select = ["UP"]
+ignore = [
+    "F722"
+]
