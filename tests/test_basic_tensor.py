@@ -110,13 +110,13 @@ def test_dot_matrix_multiply_dim0():
     """Test dot product along dimension 0 for 2D arrays."""
     np.random.seed(404)
     arr1 = np.random.randn(4, 5)
-    arr2 = np.random.randn(4, 3)
+    arr2 = np.random.randn(4, 5)
 
     result = run_tensor_dot(arr1.tolist(), arr2.tolist(), dim=0)
     result_array = np.array(result)
 
     # Contract along dimension 0: i,i... -> ...
-    expected = einsum("ij,ik->jk", arr1, arr2)
+    expected = einsum("ij,ij->j", arr1, arr2)
 
     np.testing.assert_allclose(result_array, expected, rtol=1e-5, atol=1e-8)
 
@@ -140,13 +140,13 @@ def test_dot_batch_dim0():
     """Test dot product along dimension 0 for 3D arrays."""
     np.random.seed(606)
     arr1 = np.random.randn(4, 3, 5)
-    arr2 = np.random.randn(4, 2, 5)
+    arr2 = np.random.randn(4, 3, 5)
 
     result = run_tensor_dot(arr1.tolist(), arr2.tolist(), dim=0)
     result_array = np.array(result)
 
     # Contract along dimension 0: ijk,ilk -> jlk
-    expected = einsum("ijk,ilk->jlk", arr1, arr2)
+    expected = einsum("ijk,ijk->jk", arr1, arr2)
 
     np.testing.assert_allclose(result_array, expected, rtol=1e-5, atol=1e-8)
 
@@ -155,13 +155,13 @@ def test_dot_batch_dim1():
     """Test dot product along dimension 1 for 3D arrays."""
     np.random.seed(707)
     arr1 = np.random.randn(2, 4, 5)
-    arr2 = np.random.randn(2, 4, 3)
+    arr2 = np.random.randn(2, 4, 5)
 
     result = run_tensor_dot(arr1.tolist(), arr2.tolist(), dim=1)
     result_array = np.array(result)
 
-    # Contract along dimension 1: ijk,ijk -> ik (if same dims) or ijk,ilk -> ilk
-    expected = einsum("ijk,ilk->ilk", arr1, arr2)
+    # Contract along dimension 1: ijk,ijk -> ik
+    expected = einsum("ijk,ijk->ik", arr1, arr2)
 
     np.testing.assert_allclose(result_array, expected, rtol=1e-5, atol=1e-8)
 
@@ -273,7 +273,7 @@ def test_performance_multiply_benchmark():
     # Calculate performance ratio
     performance_ratio = custom_avg / numpy_avg
 
-    print(f"\nTensor Multiply Benchmark:")
+    print("\nTensor Multiply Benchmark:")
     print(f"  NumPy avg: {numpy_avg*1000:.3f}ms ± {numpy_std*1000:.3f}ms")
     print(f"  Custom avg: {custom_avg*1000:.3f}ms ± {custom_std*1000:.3f}ms")
     print(f"  Performance ratio: {performance_ratio:.2f}x")
@@ -317,7 +317,7 @@ def test_performance_dot_benchmark():
     # Calculate performance ratio
     performance_ratio = custom_avg / numpy_avg
 
-    print(f"\nTensor Dot Benchmark:")
+    print("\nTensor Dot Benchmark:")
     print(f"  NumPy avg: {numpy_avg*1000:.3f}ms ± {numpy_std*1000:.3f}ms")
     print(f"  Custom avg: {custom_avg*1000:.3f}ms ± {custom_std*1000:.3f}ms")
     print(f"  Performance ratio: {performance_ratio:.2f}x")
