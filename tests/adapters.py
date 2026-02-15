@@ -12,6 +12,9 @@ def run_tensor_dot(arr1: Float[list, "..."], arr2: Float[list, "..."], dim: int)
 def get_sgd_cls() -> Any:
     raise NotImplementedError
 
+def get_adam_cls() -> Any:
+    raise NotImplementedError
+
 def run_relu(in_features: Float[Tensor, "..."]) -> Float[Tensor, "..."]:
     raise NotImplementedError
 
