@@ -14,7 +14,7 @@ class TestReLU:
     def test_relu_output(self, relu_input):
         tensor = torch.from_numpy(relu_input)
         result = run_relu(tensor)
-        result_np = result.numpy() if isinstance(result, torch.Tensor) else result
+        result_np = result.detach().numpy() if isinstance(result, torch.Tensor) else result
         
         # Check shape
         assert result_np.shape == relu_input.shape, \
@@ -33,7 +33,7 @@ class TestGELU:
     def test_gelu_output(self, gelu_input):
         tensor = torch.from_numpy(gelu_input)
         result = run_gelu(tensor)
-        result_np = result.numpy() if isinstance(result, torch.Tensor) else result
+        result_np = result.detach().numpy() if isinstance(result, torch.Tensor) else result
         
         # Check shape
         assert result_np.shape == gelu_input.shape, \
@@ -52,7 +52,7 @@ class TestSoftmax:
     def test_softmax_output(self, softmax_input):
         tensor = torch.from_numpy(softmax_input)
         result = run_softmax(tensor, dim=1)
-        result_np = result.numpy() if isinstance(result, torch.Tensor) else result
+        result_np = result.detach().numpy() if isinstance(result, torch.Tensor) else result
         
         # Check shape
         assert result_np.shape == softmax_input.shape, \
@@ -86,7 +86,7 @@ class TestLinear:
             weights=weights,
             in_features=input_tensor
         )
-        result_np = result.numpy() if isinstance(result, torch.Tensor) else result
+        result_np = result.detach().numpy() if isinstance(result, torch.Tensor) else result
         
         # Check shape
         expected_shape = (linear_data["input"].shape[0], linear_data["d_out"])
@@ -105,6 +105,7 @@ class TestSwiGLU:
         w1 = np.load(FIXTURES_PATH / "swiglu_w1_weight.npy")
         w2 = np.load(FIXTURES_PATH / "swiglu_w2_weight.npy")
         w3 = np.load(FIXTURES_PATH / "swiglu_w3_weight.npy")
+        expected = np.load(FIXTURES_PATH / "swiglu_output.npy")
         d_ff, d_model = w1.shape
         return {
             "input": input_data,
@@ -113,6 +114,7 @@ class TestSwiGLU:
             "w3_weight": w3,
             "d_model": d_model,
             "d_ff": d_ff,
+            "expected": expected,
         }
 
     def test_swiglu_output(self, swiglu_data):
@@ -129,12 +131,16 @@ class TestSwiGLU:
             w3_weight=w3,
             in_features=input_tensor
         )
-        result_np = result.numpy() if isinstance(result, torch.Tensor) else result
+        result_np = result.detach().numpy() if isinstance(result, torch.Tensor) else result
         
         # Check shape - output should have same shape as input (same d_model)
         assert result_np.shape == swiglu_data["input"].shape, \
             f"Expected shape {swiglu_data['input'].shape}, got {result_np.shape}"
         
-        # Check output contains valid values
+        # Check output contains correct values
         assert np.all(np.isfinite(result_np)), \
             "SwiGLU output should contain only finite values"
+        
+        # Check against manually calculated expected output
+        np.testing.assert_allclose(result_np, swiglu_data["expected"], rtol=1e-5, atol=1e-8,
+            err_msg="SwiGLU output does not match expected calculated values")
