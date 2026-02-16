@@ -41,3 +41,17 @@ def run_swiglu(
     in_features: Float[Tensor, " ... d_model"],
 ) -> Float[Tensor, " ... d_model"]:
     raise NotImplementedError
+
+def run_cross_entropy_loss(
+        y: Float[Tensor, "batch output_dim"],
+        y_bar: Float[Tensor, "batch output_dim"]) -> Float[Tensor, "1"]:
+    raise NotImplementedError
+
+def run_dropout(input: Float[Tensor, "..."], prob: float) -> Float[Tensor, "..."]:
+    raise NotImplementedError
+
+def run_layernorm(input: Float[Tensor, "batch ..."], gamma: Float[Tensor, "batch ..."], beta: Float[Tensor, "batch ..."]) -> Float[Tensor, "batch ..."]:
+    raise NotImplementedError
+
+def run_rmsnorm(input: Float[Tensor, "batch ..."], gamma: Float[Tensor, "batch ..."]) -> Float[Tensor, "batch ..."]:
+    raise NotImplementedError

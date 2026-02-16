@@ -2,8 +2,8 @@ import numpy as np
 import torch
 import pytest
 
-from tests.adapters import run_relu, run_gelu, run_softmax, run_linear, run_swiglu
-from tests.common import FIXTURES_PATH
+from .adapters import run_relu, run_gelu, run_softmax, run_linear, run_swiglu
+from .common import FIXTURES_PATH
 
 
 class TestReLU:

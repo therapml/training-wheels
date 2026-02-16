@@ -2,7 +2,7 @@ import time
 import numpy as np
 from einsum import einsum
 
-from tests.adapters import run_tensor_multiply, run_tensor_dot
+from .adapters import run_tensor_multiply, run_tensor_dot
 
 def test_multiply_basic_shape():
     """Test tensor multiplication preserves correct output shape."""
