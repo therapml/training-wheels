@@ -40,7 +40,7 @@ def test_adam():
         weight_decay=0.01,
     )
 
-    pytorch_weights = _optimize(torch.optim.Adam, cfg)
+    pytorch_weights = _optimize(torch.optim.AdamW, cfg)
     actual_weights = _optimize(get_adam_cls(), cfg)
 
     assert torch.allclose(pytorch_weights, actual_weights, atol=1e-4)
