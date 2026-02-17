@@ -43,8 +43,8 @@ def run_swiglu(
     raise NotImplementedError
 
 def run_cross_entropy_loss(
-        y: Float[Tensor, "batch output_dim"],
-        y_bar: Float[Tensor, "batch output_dim"]) -> Float[Tensor, "1"]:
+        logits: Float[Tensor, "batch output_dim"],
+        ground_truth: Float[Tensor, "batch output_dim"]) -> Float[Tensor, ""]:
     raise NotImplementedError
 
 def run_dropout(input: Float[Tensor, "..."], prob: float) -> Float[Tensor, "..."]:
