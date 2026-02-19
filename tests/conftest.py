@@ -7,6 +7,8 @@ import torch
 from torch import Tensor
 import pickle
 
+from .common import FIXTURES_PATH
+
 
 class DEFAULT:
     pass
@@ -193,7 +195,6 @@ def numpy_snapshot(request):
 
 @pytest.fixture
 def ts_state_dict(request):
-    from .common import FIXTURES_PATH
     import json
 
     state_dict = torch.load(FIXTURES_PATH / "ts_tests" / "model.pt", map_location="cpu")
@@ -294,6 +295,31 @@ def theta():
 @pytest.fixture
 def pos_ids(n_queries):
     return torch.arange(0, n_queries)
+
+
+@pytest.fixture
+def layernorm_input():
+    return torch.from_numpy(np.load(FIXTURES_PATH / "layernorm_input.npy"))
+
+
+@pytest.fixture
+def layernorm_gamma():
+    return torch.from_numpy(np.load(FIXTURES_PATH / "layernorm_gamma.npy"))
+
+
+@pytest.fixture
+def layernorm_beta():
+    return torch.from_numpy(np.load(FIXTURES_PATH / "layernorm_beta.npy"))
+
+
+@pytest.fixture
+def rmsnorm_input():
+    return torch.from_numpy(np.load(FIXTURES_PATH / "rmsnorm_input.npy"))
+
+
+@pytest.fixture
+def rmsnorm_gamma():
+    return torch.from_numpy(np.load(FIXTURES_PATH / "rmsnorm_gamma.npy"))
 
 
 # # Example usage:
