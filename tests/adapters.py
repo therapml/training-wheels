@@ -3,26 +3,34 @@ from jaxtyping import Float, Int, Bool
 
 from torch import Tensor
 
+
 def run_tensor_multiply(arr1: Float[list, "b x y"], arr2: Float[list, "b y z"]) -> Float[list, "b x z"]:
     raise NotImplementedError
+
 
 def run_tensor_dot(arr1: Float[list, "..."], arr2: Float[list, "..."], dim: int):
     raise NotImplementedError
 
+
 def get_sgd_cls() -> Any:
     raise NotImplementedError
+
 
 def get_adam_cls() -> Any:
     raise NotImplementedError
 
+
 def run_relu(in_features: Float[Tensor, "..."]) -> Float[Tensor, "..."]:
     raise NotImplementedError
+
 
 def run_gelu(in_features: Float[Tensor, "..."]) -> Float[Tensor, "..."]:
     raise NotImplementedError
 
+
 def run_softmax(in_features: Float[Tensor, "..."], dim: int) -> Float[Tensor, "..."]:
     raise NotImplementedError
+
 
 def run_linear(
     d_in: int,
@@ -31,6 +39,7 @@ def run_linear(
     in_features: Float[Tensor, "... d_in"],
 ) -> Float[Tensor, "... d_out"]:
     raise NotImplementedError
+
 
 def run_swiglu(
     d_model: int,
@@ -42,19 +51,26 @@ def run_swiglu(
 ) -> Float[Tensor, " ... d_model"]:
     raise NotImplementedError
 
+
 def run_cross_entropy_loss(
-        logits: Float[Tensor, "batch output_dim"],
-        ground_truth: Float[Tensor, "batch output_dim"]) -> Float[Tensor, ""]:
+    logits: Float[Tensor, "batch output_dim"], ground_truth: Float[Tensor, "batch output_dim"]
+) -> Float[Tensor, ""]:
     raise NotImplementedError
+
 
 def run_dropout(input: Float[Tensor, "..."], prob: float) -> Float[Tensor, "..."]:
     raise NotImplementedError
 
-def run_layernorm(input: Float[Tensor, "batch ..."], gamma: Float[Tensor, "batch ..."], beta: Float[Tensor, "batch ..."]) -> Float[Tensor, "batch ..."]:
+
+def run_layernorm(
+    input: Float[Tensor, "batch ..."], gamma: Float[Tensor, "batch ..."], beta: Float[Tensor, "batch ..."]
+) -> Float[Tensor, "batch ..."]:
     raise NotImplementedError
+
 
 def run_rmsnorm(input: Float[Tensor, "batch ..."], gamma: Float[Tensor, "batch ..."]) -> Float[Tensor, "batch ..."]:
     raise NotImplementedError
+
 
 def run_rope(
     embedding_dim: int,
@@ -64,6 +80,7 @@ def run_rope(
     token_positions: Int[Tensor, "batch ctx_len"],
 ) -> Float[Tensor, "batch ctx_len embedding_dim"]:
     raise NotImplementedError
+
 
 def run_self_attention(
     Q: Float[Tensor, "... queries d_k"],
@@ -76,6 +93,7 @@ def run_self_attention(
     """
     raise NotImplementedError
 
+
 def run_multihead_self_attention(
     d_model: int,
     num_heads: int,
@@ -86,6 +104,7 @@ def run_multihead_self_attention(
     in_features: Float[Tensor, "batch ctx_len d_in"],
 ) -> Float[Tensor, "batch ctx_len d_out"]:
     raise NotImplementedError
+
 
 def run_multihead_self_attention_with_rope(
     d_model: int,
@@ -100,6 +119,7 @@ def run_multihead_self_attention_with_rope(
     token_positions: Int[Tensor, "batch ctx_len"],
 ) -> Float[Tensor, "batch ctx_len d_out"]:
     raise NotImplementedError
+
 
 def run_transformer_block(
     d_model: int,

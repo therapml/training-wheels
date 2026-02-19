@@ -4,6 +4,7 @@ from tqdm import tqdm
 
 from .adapters import run_tensor_multiply, run_tensor_dot
 
+
 def test_multiply_basic_shape():
     """Test tensor multiplication preserves correct output shape."""
     np.random.seed(42)
@@ -15,8 +16,9 @@ def test_multiply_basic_shape():
     result = run_tensor_multiply(arr1.tolist(), arr2.tolist())
     result_array = np.array(result)
 
-    assert result_array.shape == (batch_size, x_dim, z_dim), \
+    assert result_array.shape == (batch_size, x_dim, z_dim), (
         f"Expected shape {(batch_size, x_dim, z_dim)}, got {result_array.shape}"
+    )
 
 
 def test_multiply_batch_correctness():
@@ -33,8 +35,13 @@ def test_multiply_batch_correctness():
     # Compute expected result using einsum: bij, bjk -> bik
     expected = np.einsum("bij,bjk->bik", arr1, arr2)
 
-    np.testing.assert_allclose(result_array, expected, rtol=1e-5, atol=1e-8,
-                               err_msg="Tensor multiplication result doesn't match einsum computation")
+    np.testing.assert_allclose(
+        result_array,
+        expected,
+        rtol=1e-5,
+        atol=1e-8,
+        err_msg="Tensor multiplication result doesn't match einsum computation",
+    )
 
 
 def test_multiply_single_batch():
@@ -102,8 +109,9 @@ def test_dot_vector_dot():
     # Compute expected result: simple dot product
     expected = np.dot(arr1, arr2)
 
-    np.testing.assert_allclose(result, expected, rtol=1e-5, atol=1e-8,
-                               err_msg="Vector dot product result doesn't match expected")
+    np.testing.assert_allclose(
+        result, expected, rtol=1e-5, atol=1e-8, err_msg="Vector dot product result doesn't match expected"
+    )
 
 
 def test_dot_matrix_multiply_dim0():
@@ -239,6 +247,7 @@ def test_integration_chained_multiply_and_dot():
     expected_multiply = np.einsum("bij,bjk->bik", arr1, arr2)
     np.testing.assert_allclose(multiply_result_np, expected_multiply, rtol=1e-5, atol=1e-8)
 
+
 def test_performance_multiply_benchmark():
     """Benchmark tensor multiplication performance against numpy."""
     np.random.seed(2024)
@@ -276,13 +285,14 @@ def test_performance_multiply_benchmark():
     performance_ratio = custom_avg / numpy_avg
 
     print("\nTensor Multiply Benchmark:")
-    print(f"  NumPy avg: {numpy_avg*1000:.3f}ms ± {numpy_std*1000:.3f}ms")
-    print(f"  Custom avg: {custom_avg*1000:.3f}ms ± {custom_std*1000:.3f}ms")
+    print(f"  NumPy avg: {numpy_avg * 1000:.3f}ms ± {numpy_std * 1000:.3f}ms")
+    print(f"  Custom avg: {custom_avg * 1000:.3f}ms ± {custom_std * 1000:.3f}ms")
     print(f"  Performance ratio: {performance_ratio:.2f}x")
 
     # Assert custom implementation is within 100x of numpy performance
-    assert performance_ratio <= 100.0, \
+    assert performance_ratio <= 100.0, (
         f"Custom multiply is {performance_ratio:.2f}x slower than numpy (max allowed: 100.0x)"
+    )
 
 
 def test_performance_dot_benchmark():
@@ -322,10 +332,9 @@ def test_performance_dot_benchmark():
     performance_ratio = custom_avg / numpy_avg
 
     print("\nTensor Dot Benchmark:")
-    print(f"  NumPy avg: {numpy_avg*1000:.3f}ms ± {numpy_std*1000:.3f}ms")
-    print(f"  Custom avg: {custom_avg*1000:.3f}ms ± {custom_std*1000:.3f}ms")
+    print(f"  NumPy avg: {numpy_avg * 1000:.3f}ms ± {numpy_std * 1000:.3f}ms")
+    print(f"  Custom avg: {custom_avg * 1000:.3f}ms ± {custom_std * 1000:.3f}ms")
     print(f"  Performance ratio: {performance_ratio:.2f}x")
 
     # Assert custom implementation is within 100x of numpy performance
-    assert performance_ratio <= 20.0, \
-        f"Custom dot is {performance_ratio:.2f}x slower than numpy (max allowed: 20.0x)"
+    assert performance_ratio <= 20.0, f"Custom dot is {performance_ratio:.2f}x slower than numpy (max allowed: 20.0x)"

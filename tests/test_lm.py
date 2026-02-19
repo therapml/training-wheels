@@ -9,14 +9,9 @@ from .adapters import (
     run_transformer_lm,
 )
 
+
 def test_rope(numpy_snapshot, in_embeddings, d_model, theta, n_queries, pos_ids):
-    output = run_rope(
-        d_model,
-        theta,
-        n_queries,
-        in_embeddings,
-        pos_ids
-    )
+    output = run_rope(d_model, theta, n_queries, in_embeddings, pos_ids)
     numpy_snapshot.assert_match(output, atol=1e-6)
 
 
@@ -38,6 +33,7 @@ def test_4d_self_attention(numpy_snapshot, q, k, v, mask):
         actual_output,
         atol=1e-6,
     )
+
 
 def test_multihead_self_attention(numpy_snapshot, in_embeddings, d_model, n_heads, ts_state_dict):
     d, _ = ts_state_dict
@@ -136,4 +132,3 @@ def test_transformer_block(numpy_snapshot, ts_state_dict, in_embeddings, d_model
         actual_output,
         atol=1e-6,
     )
-
